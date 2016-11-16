@@ -81,7 +81,6 @@
             if (connection.password) {
                 url += '&password=' + connection.password;
             }
-            url += '&add_http_cors_header=1';
             if (withDatabase) {
                 url += '&database=' + database;
             }

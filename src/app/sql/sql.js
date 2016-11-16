@@ -63,7 +63,6 @@ window.global_keywords_tables = "";
             }
             ],
             db: null,
-            limitRows: localStorageService.get('editorLimitRows') || 500,
             fontSize: localStorageService.get('editorFontSize') || 16,
             theme: localStorageService.get('editorTheme') || 'cobalt'
         };
@@ -129,7 +128,7 @@ window.global_keywords_tables = "";
                 });
                 localStorageService.set(SQL_SESSION_KEY, tabs);
             }
-        }
+        };
 
         /**
          * @ngdoc method
@@ -144,11 +143,6 @@ window.global_keywords_tables = "";
             let extendSettings = '';
 
             $scope.vars.currentTab.loading = true;
-
-            // если указан limitRows
-            if ($scope.vars.limitRows) {
-                extendSettings += 'max_result_rows=' + $scope.vars.limitRows + '&result_overflow_mode=throw';
-            }
 
             API.query(query.sql, query.format, true, extendSettings).then((data) => {
 
@@ -538,11 +532,6 @@ window.global_keywords_tables = "";
         /**
          * Watch and save settings in LocalStorage
          */
-        $scope.$watch('vars.limitRows', (curr) => localStorageService.set('editorLimitRows', curr));
-
-        /**
-         * Watch and save settings in LocalStorage
-         */
         $scope.$watch('vars.fontSize', (fontSize) => {
             if (fontSize) {
                 $scope.vars.tabs.forEach((tab) => tab.editor && tab.editor.setOptions({
@@ -765,9 +754,10 @@ window.global_keywords_tables = "";
             localStorageService.set(SQL_SESSION_KEY, []);
             $scope.addTab();
         }
+
         if ($rootScope.currentDatabase) {
             $scope.selectDatabase($rootScope.currentDatabase);
-        };
+        }
 
         /**
          * Controller destructor
